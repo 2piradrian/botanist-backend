@@ -2,14 +2,14 @@ import { env } from "./config"
 import { AppRouter, Server } from "./presentation"
 
 (async () => {
-    main()
-})()
+    main();
+})();
 
 async function main(){
     const server = new Server({
         port: env.PORT,
         routes: AppRouter.routes
-    })
+    });
 
-    server.start()
+    server.start();
 }
