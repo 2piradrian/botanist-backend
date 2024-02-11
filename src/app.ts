@@ -5,5 +5,5 @@ import { Server } from "./presentation/server"
 })()
 
 async function main(){
-    Server.start()
+    const server = new Server()
 }
