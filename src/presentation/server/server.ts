@@ -25,7 +25,10 @@ export class Server {
         this.app.use(cors({ origin: true, credentials: true, exposedHeaders: ["Authorization"] }));
 
 
-        console.log('Server started');
+        /* Server */
+        this.app.listen(this.port, () => {
+            console.log(`Server started on port ${ this.port }`);
+        });
     }
 
 }
