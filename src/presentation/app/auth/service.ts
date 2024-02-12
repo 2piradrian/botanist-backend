@@ -14,7 +14,6 @@ export class AuthService {
             const user = new UserModel(dto);
             user.password = EncrypterAdapter.hash(dto.password);
 
-            // Save user only if email was sent
             await user.save();
             return user
         } catch(error) {
