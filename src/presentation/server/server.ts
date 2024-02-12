@@ -24,6 +24,8 @@ export class Server {
 
         this.app.use(cors({ origin: true, credentials: true, exposedHeaders: ["Authorization"] }));
 
+        /* Routes */
+        this.app.use(this.routes);
 
         /* Server */
         this.app.listen(this.port, () => {
