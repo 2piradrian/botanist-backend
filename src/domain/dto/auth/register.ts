@@ -12,6 +12,8 @@ export class RegisterUserDTO {
     static create(data: {[key: string]: any}): [string?, RegisterUserDTO?] {
         const { email, password, username } = data;
 
+        console.log(data)
+
         const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
 
 
@@ -19,7 +21,7 @@ export class RegisterUserDTO {
             return [ErrorType.MissingFields];
         }
 
-        if (usernameRegex.test(username)) {
+        if (!usernameRegex.test(username)) {
             return [ErrorType.InvalidFields];
         }
 
