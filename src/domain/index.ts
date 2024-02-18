@@ -3,6 +3,8 @@ export * from './dto/auth/login'
 export * from './dto/auth/register'
 export * from './dto/auth/refresh-tokens'
 
+export * from './dto/post/create'
+
 export * from './error/error-handler'
 export * from './error/error-types'
 
