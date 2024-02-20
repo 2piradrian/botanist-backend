@@ -14,8 +14,6 @@ export class CreatePostDTO {
     static create(data: {[key: string]: any}): [string?, CreatePostDTO?] {
         const { userId, title, description, category, image, content } = data;
 
-        console.log(data);
-
         if (!userId || !title || !description || !category || !image || !content) {
             return [ErrorType.MissingFields];
         }
