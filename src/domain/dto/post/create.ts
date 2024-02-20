@@ -14,6 +14,8 @@ export class CreatePostDTO {
     static create(data: {[key: string]: any}): [string?, CreatePostDTO?] {
         const { userId, title, description, category, image, content } = data;
 
+        console.log(data);
+
         if (!userId || !title || !description || !category || !image || !content) {
             return [ErrorType.MissingFields];
         }
@@ -28,13 +30,29 @@ export class CreatePostDTO {
             if (typeof data[key] === 'string') {
                 data[key] = data[key].trim();
 
-                if (data[key].length === 0 || data[key].length > 1001) {
+                if (data[key].length === 0) {
+                    if (key === 'image') {
+                        continue;
+                    }
                     return [ErrorType.InvalidFields];
                 }
             }
         }
 
+        if (title.length < 4 || title.length > 21 ) {
+            return [ErrorType.InvalidFields];
+        
+        }
+
+        if ( description.length < 15 || description.length > 101) {
+            return [ErrorType.InvalidFields];
+        }
+
         if ((Categories as any)[category] === undefined) {
+            return [ErrorType.InvalidFields];
+        }
+
+        if (content.length < 15 || content.length > 1001) {
             return [ErrorType.InvalidFields];
         }
 

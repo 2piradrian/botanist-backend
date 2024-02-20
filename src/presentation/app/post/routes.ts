@@ -9,7 +9,7 @@ export class PostRoutes {
         const service = new PostService();
         const controller = new PostController(service);
 
-        router.post('/', controller.create);
+        router.post('/create', controller.create);
 
         return router;
     }
