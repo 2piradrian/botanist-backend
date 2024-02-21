@@ -22,7 +22,13 @@ export class Server {
         /* Middlewares */
         this.app.use(express.json());
 
-        this.app.use(cors({ origin: true, credentials: true, exposedHeaders: ["Authorization"] }));
+        this.app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']);
+
+        this.app.use(cors({ 
+            origin: true, 
+            credentials: true, 
+            exposedHeaders: ["Authorization"] 
+        }));
 
         /* Routes */
         this.app.use(this.routes);
