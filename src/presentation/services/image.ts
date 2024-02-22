@@ -18,7 +18,6 @@ export class ImageService {
 
             fs.writeFile(`${this.path + imageName}.jpg`, compressedImageBuffer, (error) => {
                 if (error) {
-                    console.error('Error al guardar la imagen:');
                     throw error;
                 }
             });
