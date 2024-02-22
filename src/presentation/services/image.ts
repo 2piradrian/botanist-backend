@@ -1,11 +1,12 @@
 import fs from 'fs';
 import sharp from 'sharp';
+import { env } from '../../config';
 
 export class ImageService {
     private readonly path: string;
 
     constructor() {
-        this.path = 'public/images/';
+        this.path = env.IMAGES_PATH;
         this.ensureDirectoryExists(this.path);
     }
 
@@ -34,7 +35,7 @@ export class ImageService {
 
             await fs.promises.writeFile(filePath, compressedImageBuffer);
             
-            return fileName;
+            return filePath;
         } catch (error: any) {
             throw error;
         }
