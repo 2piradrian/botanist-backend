@@ -35,7 +35,7 @@ export class ImageService {
 
             await fs.promises.writeFile(filePath, compressedImageBuffer);
             
-            return filePath;
+            return fileName;
         } catch (error: any) {
             throw error;
         }
