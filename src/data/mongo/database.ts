@@ -1,21 +1,15 @@
 import mongoose from "mongoose";
-
-interface Options {
-    mongoUrl: string;
-    dbName: string;
-}
+import { env } from "../../config";
 
 export class MongoDatabase {
 
-    static async connect(options: Options) {
-        const { mongoUrl, dbName } = options;
-
+    public async connect() {
         try{
-            await mongoose.connect(mongoUrl, { dbName });
+            await mongoose.connect(env.MONGO_URL, { dbName: env.MONGO_DB_NAME });
+
             console.log("Connected to MongoDB");
             return true;
         }catch(error){
-            // TODO: Add logger
             throw error;
         }
     }

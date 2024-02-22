@@ -1,25 +1,29 @@
 import { Sequelize } from "sequelize";
-
-interface Options {
-    user: string;
-    password: string;
-    database: string;
-}
+import { env } from "../../config";
+import { PostModel } from "./models/post";
 
 export class PostgreDatabase {
 
-    static async connect(options: Options) {
-        const { user, password, database } = options;
+    public sequelize: Sequelize;
 
+    constructor(){
+        this.sequelize = new Sequelize(env.POSTGRES_DB, env.POSTGRES_USER, env.POSTGRES_PASS, {
+            dialect: "postgres",
+            logging: false
+        });
+    }
+
+    public getSequelize() {
+        return this.sequelize;
+    }
+
+    public async connect() {
         try{
-            const sequelize = new Sequelize(database, user, password, {
-                dialect: "postgres",
-                logging: false
-            });
-
-            await sequelize.authenticate();
+            await this.sequelize.authenticate();
             console.log("Connected to Postgre");
-            return sequelize;
+
+
+            return true;
         }catch(error){
             throw error;
         }

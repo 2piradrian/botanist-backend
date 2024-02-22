@@ -8,16 +8,11 @@ import { AppRouter, Server } from "./presentation"
 
 async function main() {
 
-    await MongoDatabase.connect({ 
-        mongoUrl: env.MONGO_URL, 
-        dbName: env.MONGO_DB_NAME 
-    });
+    const mongo = new MongoDatabase();
+    await mongo.connect();
     
-    await PostgreDatabase.connect({ 
-        user: env.POSTGRES_USER, 
-        password: env.POSTGRES_PASS, 
-        database: env.POSTGRES_DB 
-    });
+    const postgres = new PostgreDatabase();
+    await postgres.connect();
 
     const server = new Server({
         port: env.PORT,

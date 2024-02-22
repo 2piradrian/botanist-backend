@@ -1,3 +1,4 @@
+import { PostModel } from "../../../data";
 import { CreatePostDTO } from "../../../domain";
 import { ImageService } from "../../services/image";
 
@@ -10,6 +11,19 @@ export class PostService {
     public async create(dto: CreatePostDTO) {
         try{
             const imageName = await this.imageService.uploadImage(dto.image, dto.title);
+
+            PostModel.sync(); // Only required the first time
+            const post = await PostModel.create({
+                title: dto.title,
+                description: dto.description,
+                category: dto.category,
+                image: imageName,
+                content: dto.content
+            });
+
+            console.log(post.toJSON());
+
+
         }catch(error){
             throw error;
         }
