@@ -12,5 +12,6 @@ export * from  './entity/user'
 export * from './entity/post'
 
 export * from './repository/post'
+export * from './repository/user'
 
 export * from './data-sources/post'
