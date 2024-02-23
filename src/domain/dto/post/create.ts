@@ -29,9 +29,6 @@ export class CreatePostDTO {
                 data[key] = data[key].trim();
 
                 if (data[key].length === 0) {
-                    if (key === 'image') {
-                        continue;
-                    }
                     return [ErrorType.InvalidFields];
                 }
             }
@@ -39,7 +36,6 @@ export class CreatePostDTO {
 
         if (title.length < 4 || title.length > 21 ) {
             return [ErrorType.InvalidFields];
-        
         }
 
         if ( description.length < 15 || description.length > 101) {

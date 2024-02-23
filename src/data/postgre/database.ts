@@ -22,7 +22,6 @@ export class PostgreDatabase {
             await this.sequelize.authenticate();
             console.log("Connected to Postgre");
 
-
             return true;
         }catch(error){
             throw error;

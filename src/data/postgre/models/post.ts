@@ -1,10 +1,12 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import { PostgreDatabase } from "../database";
 
 const database = new PostgreDatabase();
 const sequelize = database.getSequelize();
 
-export const PostModel = sequelize.define('Post', {
+export class PostModel extends Model {}
+
+PostModel.init({
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -24,7 +26,7 @@ export const PostModel = sequelize.define('Post', {
     },
     image: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     content: {
         type: DataTypes.TEXT,
@@ -37,9 +39,11 @@ export const PostModel = sequelize.define('Post', {
     },
     likedBy: {
         type: DataTypes.ARRAY(DataTypes.STRING),
-        allowNull: true
+        allowNull: false,
+        defaultValue: []
     }
-},
-{
+}, {
+    sequelize,
     tableName: 'posts',
+    modelName: 'Post',
 });
