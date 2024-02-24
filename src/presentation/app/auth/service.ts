@@ -1,21 +1,24 @@
 import { EncrypterAdapter, TokenAdapter } from "../../../config";
 import { UserModel } from "../../../data";
 import { ErrorHandler, ErrorType, LoginUserDTO, RegisterUserDTO, DeleteAccountDTO, RefreshTokenDTO, UserEntity } from "../../../domain"
+import { UserRepository_I } from "../../../infrastructure";
 
 export class AuthService {
 
+    constructor(
+        private readonly userRepository: UserRepository_I,
+    ){}
+
     public async register (dto: RegisterUserDTO) {
         try {
-            const existingUser = await UserModel.findOne({ email: dto.email });
+            const existingUser = await this.userRepository.getByEmail(dto.email);
 
             if (existingUser) {
                 throw ErrorHandler.badRequest(ErrorType.UserAlreadyExists);
             }
-            const user = new UserModel(dto);
-            user.password = EncrypterAdapter.hash(dto.password);
 
-            await user.save();
-            return user
+            dto.password = EncrypterAdapter.hash(dto.password);
+            return await this.userRepository.create(dto);
         } catch(error) {
             throw error;
         }
@@ -23,7 +26,7 @@ export class AuthService {
 
     public async login(dto: LoginUserDTO) {
         try {
-            const user = await UserModel.findOne({ email: dto.email });
+            const user = await this.userRepository.getByEmail(dto.email);
             if (!user) throw ErrorHandler.badRequest(ErrorType.UserNotFound);
 
             const passwordMatch = EncrypterAdapter.compare(dto.password, user.password);
@@ -68,14 +71,14 @@ export class AuthService {
 
     public async deleteAccount(dto: DeleteAccountDTO) {
         try{
-            const user = await UserModel.findOne({ email: dto.email });
+            const user = await this.userRepository.getByEmail(dto.email);
             if (!user) throw ErrorHandler.badRequest(ErrorType.UserNotFound);
     
             const passwordMatch = EncrypterAdapter.compare(dto.password, user.password);
             if (!passwordMatch) throw ErrorHandler.badRequest(ErrorType.InvalidPassword);
 
             // Delete user account
-            await UserModel.deleteMany({ email: dto.email });
+            await this.userRepository.delete(dto.email);
 
             return user;
         }catch(error){
