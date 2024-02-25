@@ -23,4 +23,14 @@ export class PostgresPostDataSource implements PostDataSource {
             throw error;
         }
     };
+
+    public async getPosts(): Promise<PostEntity[]> {
+        try {
+            const posts = await PostModel.findAll();
+            return posts.map(post => PostEntity.fromObject(post.dataValues));
+        } 
+        catch(error) {
+            throw error;
+        }
+    }
 }

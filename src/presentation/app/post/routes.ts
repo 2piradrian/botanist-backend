@@ -19,6 +19,7 @@ export class PostRoutes {
         const controller = new PostController(service);
 
         router.post('/create', [AuthValidator.checkToken], controller.create);
+        router.get('/get', [AuthValidator.checkToken], controller.getPosts);
 
         return router;
     }

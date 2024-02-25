@@ -24,4 +24,14 @@ export class PostService {
         }
     }
 
+    public async getPost() {
+        try {
+            const posts = await this.postRepository.getPosts();
+            return posts;
+        } 
+        catch(error) {
+            throw error;
+        }
+    }
+
 }

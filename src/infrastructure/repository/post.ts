@@ -13,4 +13,8 @@ export class PostRepository_I implements PostRepository {
     public create(dto: CreatePostDTO, imageName: string): Promise<PostEntity> {
         return this.dataSource.create(dto, imageName);
     }
+
+    public getPosts(): Promise<PostEntity[]> {
+        return this.dataSource.getPosts();
+    }
 }
