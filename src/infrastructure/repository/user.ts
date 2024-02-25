@@ -21,7 +21,7 @@ export class UserRepository_I implements UserRepository {
         return this.dataSource.delete(email);
     }
 
-    public getByEmail(email: string): Promise<UserEntity> {
+    public getByEmail(email: string): Promise<UserEntity | undefined> {
         return this.dataSource.getByEmail(email);
     }
 

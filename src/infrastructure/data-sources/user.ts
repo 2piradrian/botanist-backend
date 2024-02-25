@@ -20,11 +20,12 @@ export class MongoUserDataSource extends UserDataSource {
         }
     }
 
-    public async getByEmail(email: string): Promise<UserEntity> {
+    public async getByEmail(email: string): Promise<UserEntity | undefined> {
         try {
             const user = await UserModel.findOne({ email: email });
+
             if (!user) {
-                throw new Error(ErrorType.UserNotFound);
+                return undefined;
             }
 
             return UserEntity.fromObject(user);

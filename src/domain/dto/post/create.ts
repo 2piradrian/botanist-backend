@@ -34,11 +34,11 @@ export class CreatePostDTO {
             }
         }
 
-        if (title.length < 4 || title.length > 21 ) {
+        if (title.length < 4) {
             return [ErrorType.InvalidFields];
         }
 
-        if ( description.length < 15 || description.length > 101) {
+        if ( description.length < 15) {
             return [ErrorType.InvalidFields];
         }
 
@@ -46,7 +46,7 @@ export class CreatePostDTO {
             return [ErrorType.InvalidFields];
         }
 
-        if (content.length < 15 || content.length > 1001) {
+        if (content.length < 15) {
             return [ErrorType.InvalidFields];
         }
 
