@@ -30,8 +30,10 @@ export class ImageService {
                 .resize({ width: 1280, height: 720 })
                 .toBuffer();
 
+            const fixedImageName = imageName.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+
             const timestamp = Date.now();
-            const fileName = `${imageName}_${timestamp}.webp`;
+            const fileName = `${fixedImageName}_${timestamp}.webp`;
             const filePath = `${this.path}${fileName}`;
 
             await fs.promises.writeFile(filePath, compressedImageBuffer);
