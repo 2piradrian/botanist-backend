@@ -1,4 +1,5 @@
 import express, { Router } from 'express';
+import { BodyParser } from 'body-parser';
 import cors from 'cors';
 
 interface Options {
@@ -20,7 +21,7 @@ export class Server {
     public start(): void {
 
         /* Middlewares */
-        this.app.use(express.json());
+        this.app.use(express.json({limit: '2mb'}));
 
         this.app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']);
 

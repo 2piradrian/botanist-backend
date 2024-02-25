@@ -25,12 +25,13 @@ export class ImageService {
     async uploadImage(base64Image: string, imageName: string): Promise<string> {
         try {
             const imageBuffer = Buffer.from(base64Image, 'base64');
+            
             const compressedImageBuffer = await sharp(imageBuffer)
-                .resize({ width: 800, height: 600 })
+                .resize({ width: 1280, height: 720 })
                 .toBuffer();
 
             const timestamp = Date.now();
-            const fileName = `${imageName}_${timestamp}.jpg`;
+            const fileName = `${imageName}_${timestamp}.webp`;
             const filePath = `${this.path}${fileName}`;
 
             await fs.promises.writeFile(filePath, compressedImageBuffer);

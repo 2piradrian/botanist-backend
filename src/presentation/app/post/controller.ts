@@ -15,7 +15,7 @@ export class PostController {
         }
         
         this.postService.create(dto!)
-            .then(() => res.status(201).json({ message: 'Post created successfully' }))
+            .then((post) => res.status(201).json({ id: post.id }))
             .catch(error => res.status(500).json({ error: error.message }));
     }
 }
