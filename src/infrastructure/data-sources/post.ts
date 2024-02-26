@@ -16,8 +16,8 @@ export class PostgresPostDataSource implements PostDataSource {
                 image: dto.image,
                 content: dto.content,
                 authorId: user.id.valueOf(),
-                authorUsername: user.username
-
+                authorUsername: user.username,
+                createdAt: dto.createdAt
             });
 
             return PostEntity.fromObject(post.dataValues);
@@ -35,7 +35,7 @@ export class PostgresPostDataSource implements PostDataSource {
                 where: { category: categories },
                 limit: pageSize,
                 offset: pageSize * (page - 1),
-                order: [['createdAt', 'DESC']]
+                order: [['createdAt', 'ASC']]
             });
 
             return posts.map(post => PostEntity.fromObject(post.dataValues));

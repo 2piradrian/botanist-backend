@@ -9,6 +9,7 @@ export class CreatePostDTO {
         public category: string,
         public image: string,
         public content: string,
+        public createdAt: Date = new Date()
     ){}
 
     static create(data: {[key: string]: any}): [string?, CreatePostDTO?] {

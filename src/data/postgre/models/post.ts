@@ -35,7 +35,6 @@ PostModel.init({
     createdAt: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: new Date()
     },
     likedBy: {
         type: DataTypes.ARRAY(DataTypes.STRING),

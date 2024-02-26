@@ -40,9 +40,6 @@ export class PostService {
                 nextPage = null;
             }
 
-            console.log(posts);
-            console.log(nextPage);
-
             return {posts, nextPage};
         } 
         catch(error) {
