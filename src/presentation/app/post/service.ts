@@ -1,4 +1,4 @@
-import { CreatePostDTO, GetByCategoriesDTO } from "../../../domain";
+import { CreatePostDTO, ErrorType, GetByCategoriesDTO } from "../../../domain";
 import { PostRepository_I, UserRepository_I } from "../../../infrastructure";
 import { ImageService } from "../../services/image";
 
@@ -12,14 +12,21 @@ export class PostService {
 
     public async create(dto: CreatePostDTO) {
         try {
+            const user = await this.userRepository.getUserById(dto.userId);
+
+            if (!user) {
+                throw new Error(ErrorType.UserNotFound);
+            }
+
             dto.image = await this.imageService.uploadImage(dto.image, dto.title);
-            const post = await this.postRepository.create(dto, dto.image);
+            const post = await this.postRepository.create(dto, user);
 
             await this.userRepository.addPost(post.id, dto.userId);
 
             return post;
         } 
         catch(error) {
+            console.log(error);
             throw error;
         }
     }

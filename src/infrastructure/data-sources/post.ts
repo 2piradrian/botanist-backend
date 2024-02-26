@@ -1,5 +1,5 @@
 import { PostModel } from "../../data";
-import { CreatePostDTO, GetByCategoriesDTO, PostDataSource, PostEntity } from "../../domain";
+import { CreatePostDTO, GetByCategoriesDTO, PostDataSource, PostEntity, UserEntity } from "../../domain";
 
 export class PostgresPostDataSource implements PostDataSource {
 
@@ -7,14 +7,17 @@ export class PostgresPostDataSource implements PostDataSource {
         PostModel.sync();
     }
 
-    public async create(dto: CreatePostDTO, imageName: string): Promise<PostEntity>{
+    public async create(dto: CreatePostDTO, user: UserEntity): Promise<PostEntity>{
         try {
             const post = await PostModel.create({
                 title: dto.title,
                 description: dto.description,
                 category: dto.category,
-                image: imageName,
+                image: dto.image,
                 content: dto.content,
+                authorId: user.id.valueOf(),
+                authorUsername: user.username
+
             });
 
             return PostEntity.fromObject(post.dataValues);

@@ -20,7 +20,7 @@ export class AuthService {
             dto.password = EncrypterAdapter.hash(dto.password);
             return await this.userRepository.create(dto);
         } catch(error) {
-            throw error;
+             throw error;
         }
     }
 

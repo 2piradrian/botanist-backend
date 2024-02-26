@@ -33,6 +33,7 @@ export class Server {
 
         /* Routes */
         this.app.use(this.routes);
+        this.app.use("/public", express.static('public'));
 
         /* Server */
         this.app.listen(this.port, () => {
