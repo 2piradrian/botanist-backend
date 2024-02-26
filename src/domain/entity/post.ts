@@ -1,3 +1,5 @@
+import { env } from "../../config";
+
 export class PostEntity {
     private constructor(
         public id: string,
@@ -13,12 +15,14 @@ export class PostEntity {
     static fromObject(object: {[key: string]: any}): PostEntity {
         const { _id, id, title, description, category, image, content, createdAt, likedBy} = object;
 
+        let imageRoute = env.IMAGES_PATH + image;
+
         return new PostEntity(
             _id || id,
             title,
             description,
             category,
-            image,
+            imageRoute,
             content,
             createdAt,
             likedBy

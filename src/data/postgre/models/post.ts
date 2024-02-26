@@ -41,6 +41,14 @@ PostModel.init({
         type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: false,
         defaultValue: []
+    },
+    authorId: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    authorUsername: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 }, {
     sequelize,

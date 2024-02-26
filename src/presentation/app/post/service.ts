@@ -1,4 +1,4 @@
-import { CreatePostDTO } from "../../../domain";
+import { CreatePostDTO, GetByCategoriesDTO } from "../../../domain";
 import { PostRepository_I, UserRepository_I } from "../../../infrastructure";
 import { ImageService } from "../../services/image";
 
@@ -24,12 +24,22 @@ export class PostService {
         }
     }
 
-    public async getPost() {
+    public async getPosts(dto: GetByCategoriesDTO) {
         try {
-            const posts = await this.postRepository.getPosts();
-            return posts;
+            const posts = await this.postRepository.getPosts(dto);
+
+            let nextPage: number | null = dto.page + 1;
+            if (posts.length < dto.pageSize){
+                nextPage = null;
+            }
+
+            console.log(posts);
+            console.log(nextPage);
+
+            return {posts, nextPage};
         } 
         catch(error) {
+            console.log(error);
             throw error;
         }
     }

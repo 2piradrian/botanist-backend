@@ -3,8 +3,7 @@ import { PostService } from "./service";
 import { PostController } from "./controller";
 import { AuthValidator } from "../../middlewares/auth";
 import { ImageService } from "../../services/image";
-import { PostRepository_I } from "../../../infrastructure/repository/post";
-import { UserRepository_I } from "../../../infrastructure";
+import { PostRepository_I, UserRepository_I } from "../../../infrastructure";
 
 export class PostRoutes {
     static get routes(): Router {
@@ -19,7 +18,7 @@ export class PostRoutes {
         const controller = new PostController(service);
 
         router.post('/create', [AuthValidator.checkToken], controller.create);
-        router.get('/get', [AuthValidator.checkToken], controller.getPosts);
+        router.post('/get-by-categories', [AuthValidator.checkToken], controller.getByCategories);
 
         return router;
     }

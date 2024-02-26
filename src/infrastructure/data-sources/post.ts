@@ -1,5 +1,5 @@
 import { PostModel } from "../../data";
-import { CreatePostDTO, PostDataSource, PostEntity } from "../../domain";
+import { CreatePostDTO, GetByCategoriesDTO, PostDataSource, PostEntity } from "../../domain";
 
 export class PostgresPostDataSource implements PostDataSource {
 
@@ -24,9 +24,17 @@ export class PostgresPostDataSource implements PostDataSource {
         }
     };
 
-    public async getPosts(): Promise<PostEntity[]> {
+    public async getPosts(dto: GetByCategoriesDTO): Promise<PostEntity[]> {
         try {
-            const posts = await PostModel.findAll();
+            const { categories, pageSize, page} = dto;
+
+            const posts = await PostModel.findAll({
+                where: { category: categories },
+                limit: pageSize,
+                offset: pageSize * (page - 1),
+                order: [['createdAt', 'DESC']]
+            });
+
             return posts.map(post => PostEntity.fromObject(post.dataValues));
         } 
         catch(error) {

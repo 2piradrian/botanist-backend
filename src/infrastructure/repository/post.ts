@@ -1,4 +1,4 @@
-import { CreatePostDTO, PostEntity } from "../../domain";
+import { CreatePostDTO, GetByCategoriesDTO, PostEntity } from "../../domain";
 import { PostRepository } from "../../domain/repository/post";
 import { PostgresPostDataSource } from "../data-sources/post";
 
@@ -14,7 +14,7 @@ export class PostRepository_I implements PostRepository {
         return this.dataSource.create(dto, imageName);
     }
 
-    public getPosts(): Promise<PostEntity[]> {
-        return this.dataSource.getPosts();
+    public getPosts(dto: GetByCategoriesDTO): Promise<PostEntity[]> {
+        return this.dataSource.getPosts(dto);
     }
 }
