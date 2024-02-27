@@ -26,7 +26,7 @@ export class PostController {
             return res.status(400).json({ error });
         }
 
-        this.postService.getPosts(dto!)
+        this.postService.getByCategories(dto!)
             .then((posts) => res.status(200).json(posts))
             .catch(error => res.status(500).json({ error: error.message }));
     }

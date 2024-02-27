@@ -27,12 +27,12 @@ export class PostgresPostDataSource implements PostDataSource {
         }
     };
 
-    public async getPosts(dto: GetByCategoriesDTO): Promise<PostEntity[]> {
+    public async getByCategories(dto: GetByCategoriesDTO): Promise<PostEntity[]> {
         try {
             const { categories, pageSize, page} = dto;
 
             const posts = await PostModel.findAll({
-                where: { category: categories },
+                where: { category: categories},
                 limit: pageSize,
                 offset: pageSize * (page - 1),
                 order: [['createdAt', 'ASC']]

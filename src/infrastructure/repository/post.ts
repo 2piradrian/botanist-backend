@@ -14,7 +14,7 @@ export class PostRepository_I implements PostRepository {
         return this.dataSource.create(dto, user);
     }
 
-    public getPosts(dto: GetByCategoriesDTO): Promise<PostEntity[]> {
-        return this.dataSource.getPosts(dto);
+    public getByCategories(dto: GetByCategoriesDTO): Promise<PostEntity[]> {
+        return this.dataSource.getByCategories(dto);
     }
 }

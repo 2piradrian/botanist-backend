@@ -31,9 +31,9 @@ export class PostService {
         }
     }
 
-    public async getPosts(dto: GetByCategoriesDTO) {
+    public async getByCategories(dto: GetByCategoriesDTO) {
         try {
-            const posts = await this.postRepository.getPosts(dto);
+            const posts = await this.postRepository.getByCategories(dto);
 
             let nextPage: number | null = dto.page + 1;
             if (posts.length < dto.pageSize){
