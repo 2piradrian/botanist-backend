@@ -6,6 +6,7 @@ export enum ErrorType {
 	Unknown                 = "Unknown error",
 	UserAlreadyExists       = "User already exists",
 	UserNotFound            = "User not found",
+	PostNotFound            = "Post not found",
 	Unauthorized            = "Unauthorized",
 	Disconnected            = "Disconnected",
 }

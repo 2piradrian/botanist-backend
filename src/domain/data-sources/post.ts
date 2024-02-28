@@ -4,6 +4,8 @@ import { PostEntity } from "../entity/post";
 import { UserEntity } from "../entity/user";
 
 export abstract class PostDataSource {
+    public abstract getById(id: string): Promise<PostEntity | undefined>;
     public abstract create(dto: CreatePostDTO, user: UserEntity): Promise<PostEntity>;
     public abstract getByCategories(dto: GetByCategoriesDTO): Promise<PostEntity[]>;
+    public abstract update(post: PostEntity): Promise<void>;
 }

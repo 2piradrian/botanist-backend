@@ -9,12 +9,12 @@ export class UserRepository_I implements UserRepository {
         this.dataSource = new MongoUserDataSource();
     }
 
-    public addPost(postId: string, userId: string): Promise<void> {
-        return this.dataSource.addPost(postId, userId);
-    }
-
     public create(dto: RegisterUserDTO): Promise<UserEntity> {
         return this.dataSource.create(dto);
+    }
+
+    public update(user: UserEntity): Promise<void> {
+        return this.dataSource.update(user);
     }
 
     public delete(email: string): Promise<void> {

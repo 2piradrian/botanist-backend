@@ -10,6 +10,10 @@ export class PostRepository_I implements PostRepository {
         this.dataSource = new PostgresPostDataSource();
     }
 
+    public getById(id: string): Promise<PostEntity | undefined> {
+        return this.dataSource.getById(id);
+    }
+
     public create(dto: CreatePostDTO, user: UserEntity): Promise<PostEntity> {
         return this.dataSource.create(dto, user);
     }
@@ -17,4 +21,9 @@ export class PostRepository_I implements PostRepository {
     public getByCategories(dto: GetByCategoriesDTO): Promise<PostEntity[]> {
         return this.dataSource.getByCategories(dto);
     }
+
+    public update(post: PostEntity): Promise<void> {
+        return this.dataSource.update(post);
+    }
+
 }

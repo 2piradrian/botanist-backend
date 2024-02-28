@@ -21,7 +21,8 @@ export class PostService {
             dto.image = await this.imageService.uploadImage(dto.image, dto.title);
             const post = await this.postRepository.create(dto, user);
 
-            await this.userRepository.addPost(post.id, dto.userId);
+            user.posts.push(post.id.valueOf());
+            await this.userRepository.update(user);
 
             return post;
         } 
@@ -29,7 +30,7 @@ export class PostService {
             console.log(error);
             throw error;
         }
-    }
+    } 
 
     public async getByCategories(dto: GetByCategoriesDTO) {
         try {

@@ -6,6 +6,8 @@ export * from './dto/auth/refresh-tokens'
 export * from './dto/post/create'
 export * from './dto/post/get-by-categories'
 
+export * from './dto/user/like-post'
+
 export * from './error/error-handler'
 export * from './error/error-types'
 

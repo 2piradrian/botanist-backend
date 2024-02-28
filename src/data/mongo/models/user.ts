@@ -22,6 +22,18 @@ const userSchema = new mongoose.Schema({
     posts: {
         type: [String],
         default: []
+    },
+    followers: {
+        type: [String],
+        default: []
+    },
+    following: {
+        type: [String],
+        default: []
+    },
+    likes: {
+        type: [String],
+        default: []
     }
 });
 
