@@ -1,4 +1,5 @@
 import { ErrorHandler, ErrorType, LikePostDTO } from "../../../domain";
+import { FollowUserDTO } from "../../../domain/dto/user/follow-user";
 import { PostRepository_I, UserRepository_I } from "../../../infrastructure";
 
 export class UserService {
@@ -38,6 +39,37 @@ export class UserService {
 
             await this.userRepository.update(user);
             await this.postRepository.update(post);
+        }
+        catch(error){
+            console.log(error);
+            throw error;
+        }
+    }
+
+    public async followUser(dto: FollowUserDTO) {
+        try {
+            const user = await this.userRepository.getUserById(dto.userId);
+            if (!user) {
+                throw ErrorHandler.badRequest(ErrorType.UserNotFound);
+            }
+
+            const followedUser = await this.userRepository.getUserById(dto.followedId);
+            if (!followedUser) {
+                throw ErrorHandler.badRequest(ErrorType.UserNotFound);
+            }
+
+            const userIndex = user.following.findIndex(follow => follow === followedUser.id.valueOf());
+            const followedIndex = followedUser.followers.findIndex(follower => follower === user.id.valueOf());
+            if (userIndex === -1) {
+                user.following.push(followedUser.id.valueOf());
+                followedUser.followers.push(user.id.valueOf());
+            } else {
+                user.following.splice(userIndex, 1);
+                followedUser.followers.splice(followedIndex, 1);
+            }
+
+            await this.userRepository.update(user);
+            await this.userRepository.update(followedUser);
         }
         catch(error){
             console.log(error);
