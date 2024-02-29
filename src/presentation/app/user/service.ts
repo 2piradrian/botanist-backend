@@ -11,7 +11,7 @@ export class UserService {
 
     public async likePost(dto: LikePostDTO) {
         try {
-            const user = await this.userRepository.getUserById(dto.userId);
+            const user = await this.userRepository.getById(dto.userId);
             if (!user) {
                 throw ErrorHandler.badRequest(ErrorType.UserNotFound);
             }
@@ -33,7 +33,8 @@ export class UserService {
             const postIndex = post.likedBy.findIndex(like => like === user.id.valueOf());
             if (postIndex === -1) {
                 post.likedBy.push(user.id.valueOf());
-            } else {
+            } 
+            else {
                 post.likedBy.splice(postIndex, 1);
             }
 
@@ -48,12 +49,12 @@ export class UserService {
 
     public async followUser(dto: FollowUserDTO) {
         try {
-            const user = await this.userRepository.getUserById(dto.userId);
+            const user = await this.userRepository.getById(dto.userId);
             if (!user) {
                 throw ErrorHandler.badRequest(ErrorType.UserNotFound);
             }
 
-            const followedUser = await this.userRepository.getUserById(dto.followedId);
+            const followedUser = await this.userRepository.getById(dto.followedId);
             if (!followedUser) {
                 throw ErrorHandler.badRequest(ErrorType.UserNotFound);
             }
@@ -63,7 +64,8 @@ export class UserService {
             if (userIndex === -1) {
                 user.following.push(followedUser.id.valueOf());
                 followedUser.followers.push(user.id.valueOf());
-            } else {
+            } 
+            else {
                 user.following.splice(userIndex, 1);
                 followedUser.followers.splice(followedIndex, 1);
             }

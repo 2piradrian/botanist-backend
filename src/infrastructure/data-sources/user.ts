@@ -19,7 +19,7 @@ export class MongoUserDataSource extends UserDataSource {
         }
     }
 
-    public async getUserById(id: string): Promise<UserEntity | undefined> {
+    public async getById(id: string): Promise<UserEntity | undefined> {
         try {
             const user = await UserModel.findById(id);
 

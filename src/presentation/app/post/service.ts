@@ -12,7 +12,7 @@ export class PostService {
 
     public async create(dto: CreatePostDTO) {
         try {
-            const user = await this.userRepository.getUserById(dto.userId);
+            const user = await this.userRepository.getById(dto.userId);
 
             if (!user) {
                 throw new Error(ErrorType.UserNotFound);
