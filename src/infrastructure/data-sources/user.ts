@@ -48,7 +48,7 @@ export class MongoUserDataSource extends UserDataSource {
 
     public async update(user: UserEntity): Promise<void> {
         try {
-            await UserModel.updateOne({ id: user.id, email: user.email }, user); 
+            await UserModel.updateOne({ email: user.email }, user); 
         }
         catch(error){
             throw error;

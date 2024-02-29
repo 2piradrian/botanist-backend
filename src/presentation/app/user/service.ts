@@ -1,3 +1,4 @@
+import { UnparseImage } from "../../../config";
 import { ErrorHandler, ErrorType, LikePostDTO } from "../../../domain";
 import { FollowUserDTO } from "../../../domain/dto/user/follow-user";
 import { PostRepository_I, UserRepository_I } from "../../../infrastructure";
@@ -20,6 +21,9 @@ export class UserService {
             if (!post) {
                 throw ErrorHandler.badRequest(ErrorType.PostNotFound)
             };
+
+            // Remove url from image
+            post.image = UnparseImage(post.image);
 
             // Toggle like on user model
             const userIndex = user.likes.findIndex(like => like === post.id.valueOf());

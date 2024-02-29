@@ -2,6 +2,7 @@ import { Router } from "express";
 import { UserService } from "./service";
 import { PostRepository_I, UserRepository_I } from "../../../infrastructure";
 import { UserController } from "./controller";
+import { AuthValidator } from "../../middlewares/auth";
 
 export class UserRoutes {
     static get routes(): Router {
@@ -14,8 +15,8 @@ export class UserRoutes {
 
         const controller = new UserController(service);
 
-        router.put('/like-post', controller.likePost);
-        router.put('/follow-user', controller.followUser);
+        router.put('/like-post', [AuthValidator.checkToken], controller.likePost);
+        router.put('/follow-user', [AuthValidator.checkToken], controller.followUser);
 
         return router;
     }
