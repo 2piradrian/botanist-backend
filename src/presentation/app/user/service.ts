@@ -1,6 +1,5 @@
 import { UnparseImage } from "../../../config";
-import { ErrorHandler, ErrorType, LikePostDTO } from "../../../domain";
-import { FollowUserDTO } from "../../../domain/dto/user/follow-user";
+import { ErrorHandler, ErrorType, FollowUserDTO, GetProfileDTO, LikePostDTO } from "../../../domain";
 import { PostRepository_I, UserRepository_I } from "../../../infrastructure";
 
 export class UserService {
@@ -9,6 +8,30 @@ export class UserService {
         private readonly userRepository: UserRepository_I,
         private readonly postRepository: PostRepository_I
     ){}
+
+    public async getProfile(dto: GetProfileDTO) {
+        try{
+            const user = await this.userRepository.getById(dto.profile.valueOf());
+
+            if (!user) {
+                throw ErrorHandler.badRequest(ErrorType.UserNotFound);
+            }
+
+            if (user.id.valueOf() !== dto.userId) {
+                const { password, createdAt, following, likes, ...limitedUser } = user;
+
+                return {user: limitedUser}
+            }
+            else {
+                const { password, createdAt, ...sanitizedUser } = user;
+                return {user: sanitizedUser};
+            }
+        }
+        catch(error){
+            console.log(error);
+            throw error;
+        }
+    }
 
     public async likePost(dto: LikePostDTO) {
         try {

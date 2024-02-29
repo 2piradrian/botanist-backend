@@ -1,12 +1,23 @@
 import { Request, Response } from "express";
 import { UserService } from "./service";
-import { LikePostDTO } from "../../../domain";
-import { FollowUserDTO } from "../../../domain/dto/user/follow-user";
+import { FollowUserDTO, GetProfileDTO, LikePostDTO } from "../../../domain";
 
 export class UserController {
     constructor(
         private readonly userService: UserService
     ){}
+
+    getProfile = (req: Request, res: Response) => {
+        const [error, dto] = GetProfileDTO.create(req.body);
+
+        if (error) {
+            return res.status(400).json({ error });
+        }
+
+        this.userService.getProfile(dto!)
+            .then(profile => res.status(200).json(profile))
+            .catch(error => res.status(500).json({ error: error.message }));
+    }
 
     likePost = (req: Request, res: Response) => {
         const [error, dto] = LikePostDTO.create(req.body);

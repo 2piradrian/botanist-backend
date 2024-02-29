@@ -15,6 +15,7 @@ export class UserRoutes {
 
         const controller = new UserController(service);
 
+        router.post('/get-profile', [AuthValidator.checkToken], controller.getProfile);
         router.put('/like-post', [AuthValidator.checkToken], controller.likePost);
         router.put('/follow-user', [AuthValidator.checkToken], controller.followUser);
 

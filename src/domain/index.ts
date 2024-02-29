@@ -7,6 +7,8 @@ export * from './dto/post/create'
 export * from './dto/post/get-by-categories'
 
 export * from './dto/user/like-post'
+export * from './dto/user/follow-user'
+export * from './dto/user/get-profile'
 
 export * from './error/error-handler'
 export * from './error/error-types'
