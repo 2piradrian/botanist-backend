@@ -20,7 +20,7 @@ export class PostController {
     }
 
     getByCategories = (req: Request, res: Response) => {
-        const [error, dto] = GetByCategoriesDTO.create(req.body);
+        const [error, dto] = GetByCategoriesDTO.create(req.query);
 
         if (error) {
             return res.status(400).json({ error });

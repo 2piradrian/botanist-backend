@@ -14,6 +14,10 @@ export class PostRepository_I implements PostRepository {
         return this.dataSource.getById(id);
     }
 
+    public getByUserIds(ids: string[]): Promise<PostEntity[]> {
+        return this.dataSource.getByUserIds(ids);
+    }
+
     public create(dto: CreatePostDTO, user: UserEntity): Promise<PostEntity> {
         return this.dataSource.create(dto, user);
     }

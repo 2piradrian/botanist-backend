@@ -15,15 +15,15 @@ export class GetByCategoriesDTO {
             return [ErrorType.MissingFields];
         }
 
-        if (typeof page !== 'number' || typeof pageSize !== 'number') {
-            return [ErrorType.InvalidFields];
+        let categoryList: string[] = categories.split(',');
+        if (categories.length === 0) {
+            categoryList = Object.keys(Categories);
         }
 
-        if (!Array.isArray(categories)) {
-            return [ErrorType.InvalidFields];
-        }
+        const pageInt = parseInt(page);
+        const pageSizeInt = parseInt(pageSize);
 
-        for (const category of categories) {
+        for (const category of categoryList) {
             if (typeof category !== 'string') {
                 return [ErrorType.InvalidFields];
             }
@@ -32,12 +32,11 @@ export class GetByCategoriesDTO {
             }
         }
 
-        let categoryList: string[] = categories;
-        if (categories.length === 0) {
-            categoryList = Object.keys(Categories);
+        if (pageInt <= 0 || pageSizeInt <= 0) {
+            return [ErrorType.InvalidFields];
         }
 
-        return [undefined, new GetByCategoriesDTO(page, pageSize, categoryList)];
+        return [undefined, new GetByCategoriesDTO(pageInt, pageSizeInt, categoryList)];
     }
 
 }

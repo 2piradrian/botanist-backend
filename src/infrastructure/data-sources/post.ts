@@ -22,6 +22,19 @@ export class PostgresPostDataSource implements PostDataSource {
         }
     }
 
+    public async getByUserIds(ids: string[]): Promise<PostEntity[]> {
+        try {
+            const posts = await PostModel.findAll({
+                where: { authorId: ids }
+            });
+
+            return posts.map(post => PostEntity.fromObject(post.dataValues));
+        } 
+        catch(error) {
+            throw error;
+        }
+    }
+
     public async create(dto: CreatePostDTO, user: UserEntity): Promise<PostEntity>{
         try {
             const post = await PostModel.create({
