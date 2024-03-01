@@ -1,5 +1,4 @@
 import express, { Router } from 'express';
-import { BodyParser } from 'body-parser';
 import cors from 'cors';
 
 interface Options {

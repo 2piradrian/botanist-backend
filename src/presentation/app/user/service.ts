@@ -49,7 +49,10 @@ export class UserService {
             post.image = UnparseImage(post.image);
 
             // Toggle like on user model
-            const userIndex = user.likes.findIndex(like => like === post.id.valueOf());
+            const userIndex = user.likes.findIndex(
+                like => like.toString() === post.id.valueOf().toString()
+            );
+
             if (userIndex === -1) {
                 user.likes.push(post.id.valueOf());
             } else {
@@ -57,7 +60,10 @@ export class UserService {
             }
 
             // Toggle like on post model
-            const postIndex = post.likedBy.findIndex(like => like === user.id.valueOf());
+            const postIndex = post.likedBy.findIndex(
+                like => like.toString() === user.id.valueOf().toString()
+            );
+
             if (postIndex === -1) {
                 post.likedBy.push(user.id.valueOf());
             } 
