@@ -1,5 +1,5 @@
 import { UnparseImage } from "../../../config";
-import { ErrorHandler, ErrorType, FollowUserDTO, GetProfileDTO, LikePostDTO } from "../../../domain";
+import { ErrorHandler, ErrorType, FollowUserDTO, GetProfileDTO, LikePostDTO, PostEntity } from "../../../domain";
 import { PostRepository_I, UserRepository_I } from "../../../infrastructure";
 
 export class UserService {
@@ -17,14 +17,19 @@ export class UserService {
                 throw ErrorHandler.badRequest(ErrorType.UserNotFound);
             }
 
-            if (user.id.valueOf() !== dto.userId) {
-                const { password, createdAt, following, likes, ...limitedUser } = user;
+            let posts: PostEntity[] = [];
+            if (dto.includePosts){
+                posts = await this.postRepository.getByUserIds([user.id.valueOf()]);
+            }
 
-                return {user: limitedUser}
+            if (user.id.valueOf() !== dto.userId) {
+                const { password, createdAt, likes, ...limitedUser } = user;
+
+                return {user: limitedUser, posts}
             }
             else {
                 const { password, createdAt, ...sanitizedUser } = user;
-                return {user: sanitizedUser};
+                return {user: sanitizedUser, posts};
             }
         }
         catch(error){
@@ -44,6 +49,10 @@ export class UserService {
             if (!post) {
                 throw ErrorHandler.badRequest(ErrorType.PostNotFound)
             };
+
+            if (user.id.valueOf() === post.authorId.valueOf()) {
+                throw ErrorHandler.badRequest(ErrorType.CantLikeYourOwnPost);
+            }
 
             // Remove url from image
             post.image = UnparseImage(post.image);
@@ -90,6 +99,10 @@ export class UserService {
             const followedUser = await this.userRepository.getById(dto.followedId);
             if (!followedUser) {
                 throw ErrorHandler.badRequest(ErrorType.UserNotFound);
+            }
+
+            if (user.id.valueOf() === followedUser.id.valueOf()) {
+                throw ErrorHandler.badRequest(ErrorType.CantFollowYourself);
             }
 
             const userIndex = user.following.findIndex(follow => follow === followedUser.id.valueOf());

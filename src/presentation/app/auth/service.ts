@@ -19,7 +19,8 @@ export class AuthService {
 
             dto.password = EncrypterAdapter.hash(dto.password);
             return await this.userRepository.create(dto);
-        } catch(error) {
+        } 
+        catch(error) {
              throw error;
         }
     }
@@ -42,7 +43,8 @@ export class AuthService {
             if (!refreshToken) throw ErrorHandler.internal(ErrorType.InternalError);
 
             return { user: userData, tokens: {accessToken, refreshToken}};
-        }catch(error){
+        }
+        catch(error){
             throw error;
         }
     }
@@ -64,7 +66,8 @@ export class AuthService {
             if (!newRefreshToken) throw ErrorHandler.internal(ErrorType.InternalError);
 
             return { accessToken: accessToken, refreshToken: newRefreshToken};
-        }catch(error){
+        }
+        catch(error){
             throw error;
         }
     }
@@ -81,7 +84,8 @@ export class AuthService {
             await this.userRepository.delete(dto.email);
 
             return user;
-        }catch(error){
+        }
+        catch(error){
             throw error;
         }
     }

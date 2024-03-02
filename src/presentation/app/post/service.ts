@@ -27,7 +27,6 @@ export class PostService {
             return post;
         } 
         catch(error) {
-            console.log(error);
             throw error;
         }
     } 
@@ -44,7 +43,6 @@ export class PostService {
             return {posts, nextPage};
         } 
         catch(error) {
-            console.log(error);
             throw error;
         }
     }

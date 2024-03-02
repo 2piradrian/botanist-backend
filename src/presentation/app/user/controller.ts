@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "./service";
-import { FollowUserDTO, GetProfileDTO, LikePostDTO } from "../../../domain";
+import { ErrorHandler, FollowUserDTO, GetProfileDTO, LikePostDTO } from "../../../domain";
 
 export class UserController {
     constructor(
@@ -8,7 +8,7 @@ export class UserController {
     ){}
 
     getProfile = (req: Request, res: Response) => {
-        const [error, dto] = GetProfileDTO.create(req.body);
+        const [error, dto] = GetProfileDTO.create({...req.query, userId: req.body.userId});
 
         if (error) {
             return res.status(400).json({ error });
@@ -16,7 +16,7 @@ export class UserController {
 
         this.userService.getProfile(dto!)
             .then(profile => res.status(200).json(profile))
-            .catch(error => res.status(500).json({ error: error.message }));
+            .catch(error => ErrorHandler.handle(error, res));
     }
 
     likePost = (req: Request, res: Response) => {
@@ -28,7 +28,7 @@ export class UserController {
 
         this.userService.likePost(dto!)
             .then(() => res.status(200).json({ message: 'Post liked successfully' }))
-            .catch(error => res.status(500).json({ error: error.message }));
+            .catch(error => ErrorHandler.handle(error, res));
     }
 
     followUser = (req: Request, res: Response) => {
@@ -40,6 +40,6 @@ export class UserController {
 
         this.userService.followUser(dto!)
             .then(() => res.status(200).json({ message: 'Post liked successfully' }))
-            .catch(error => res.status(500).json({ error: error.message }));
+            .catch(error => ErrorHandler.handle(error, res));
     }
 }

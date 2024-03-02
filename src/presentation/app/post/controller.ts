@@ -1,3 +1,4 @@
+import { ErrorHandler } from './../../../domain/error/error-handler';
 import { Request, Response } from "express";
 import { PostService } from "./service";
 import { CreatePostDTO, GetByCategoriesDTO } from "../../../domain";
@@ -16,7 +17,7 @@ export class PostController {
         
         this.postService.create(dto!)
             .then((post) => res.status(201).json({ id: post.id }))
-            .catch(error => res.status(500).json({ error: error.message }));
+            .catch(error => ErrorHandler.handle(error, res));
     }
 
     getByCategories = (req: Request, res: Response) => {
@@ -28,6 +29,6 @@ export class PostController {
 
         this.postService.getByCategories(dto!)
             .then((posts) => res.status(200).json(posts))
-            .catch(error => res.status(500).json({ error: error.message }));
+            .catch(error => ErrorHandler.handle(error, res));
     }
 }

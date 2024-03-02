@@ -9,4 +9,6 @@ export enum ErrorType {
 	PostNotFound            = "Post not found",
 	Unauthorized            = "Unauthorized",
 	Disconnected            = "Disconnected",
+	CantFollowYourself      = "Can't follow yourself",
+	CantLikeYourOwnPost     = "Can't like your own post",
 }
