@@ -9,31 +9,6 @@ export class UserService {
         private readonly postRepository: PostRepository_I
     ){}
 
-    public async getFeed(dto: GetFeedDTO) {
-        try{
-            const user = await this.userRepository.getById(dto.userId);
-            if (!user) {
-                throw ErrorHandler.badRequest(ErrorType.UserNotFound);
-            }
-
-            const following = user.following;
-
-            const posts = await this.postRepository.getByUserIds(following);
-
-            let nextPage: number | null = dto.page + 1;
-            if (posts.length < dto.pageSize){
-                nextPage = null;
-            }
-            
-
-            return {posts, nextPage};
-        }
-        catch(error){
-            console.log(error);
-            throw error;
-        }
-    }
-
     public async getProfile(dto: GetProfileDTO) {
         try{
             const user = await this.userRepository.getById(dto.profile.valueOf());
