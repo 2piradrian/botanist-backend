@@ -1,5 +1,5 @@
 import { UnparseImage } from "../../../config";
-import { ErrorHandler, ErrorType, FollowUserDTO, GetFeedDTO, GetProfileDTO, LikePostDTO } from "../../../domain";
+import { ErrorHandler, ErrorType, FollowUserDTO, GetProfileDTO, LikePostDTO } from "../../../domain";
 import { PostRepository_I, UserRepository_I } from "../../../infrastructure";
 
 export class UserService {
