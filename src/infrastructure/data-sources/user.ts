@@ -34,6 +34,20 @@ export class MongoUserDataSource extends UserDataSource {
         }
     }
 
+    public async getByUsername(username: string): Promise<UserEntity | undefined> {
+        try {
+            const user = await UserModel.findOne({ username: username });
+
+            if (!user) {
+                return undefined;
+            }
+
+            return UserEntity.fromObject(user);
+        }catch(error){
+            throw error;
+        }
+    }
+
     public async create(dto: RegisterUserDTO): Promise<UserEntity> {
         try {
             const newUser = new UserModel(dto);

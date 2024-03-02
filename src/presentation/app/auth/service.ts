@@ -11,10 +11,16 @@ export class AuthService {
 
     public async register (dto: RegisterUserDTO) {
         try {
-            const existingUser = await this.userRepository.getByEmail(dto.email);
+            const existingEmail = await this.userRepository.getByEmail(dto.email);
 
-            if (existingUser) {
-                throw ErrorHandler.badRequest(ErrorType.UserAlreadyExists);
+            if (existingEmail) {
+                throw ErrorHandler.badRequest(ErrorType.EmailAlreadyExists);
+            }
+
+            const existingUsername = await this.userRepository.getByUsername(dto.username);
+
+            if (existingUsername) {
+                throw ErrorHandler.badRequest(ErrorType.UsernameAlreadyExists);
             }
 
             dto.password = EncrypterAdapter.hash(dto.password);

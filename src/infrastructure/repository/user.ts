@@ -25,6 +25,10 @@ export class UserRepository_I implements UserRepository {
         return this.dataSource.getByEmail(email);
     }
 
+    public getByUsername(username: string): Promise<UserEntity | undefined> {
+        return this.dataSource.getByUsername(username);
+    }
+
     public getById(id: string): Promise<UserEntity | undefined> {
         return this.dataSource.getById(id);
     }
