@@ -96,4 +96,15 @@ export class PostgresPostDataSource implements PostDataSource {
             throw error;
         }
     }
+
+    public async delete(post: PostEntity): Promise<void> {
+        try {
+            await PostModel.destroy({
+                where: { id: post.id.valueOf() }
+            });
+        } 
+        catch(error) {
+            throw error;
+        }
+    }
 }

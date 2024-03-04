@@ -1,4 +1,4 @@
-import { CreatePostDTO, ErrorType, GetByCategoriesDTO } from "../../../domain";
+import { CreatePostDTO, DeletePostDTO, ErrorType, GetByCategoriesDTO } from "../../../domain";
 import { PostRepository_I, UserRepository_I } from "../../../infrastructure";
 import { ImageService } from "../../services/image";
 
@@ -41,6 +41,33 @@ export class PostService {
             }
 
             return {posts, nextPage};
+        } 
+        catch(error) {
+            throw error;
+        }
+    }
+
+    public async delete(dto: DeletePostDTO) {
+        try {
+            const post = await this.postRepository.getById(dto.postId);
+            const user = await this.userRepository.getById(dto.userId);
+
+            if (!post) {
+                throw new Error(ErrorType.PostNotFound);
+            }
+            if (!user) {
+                throw new Error(ErrorType.UserNotFound);
+            }
+
+            if (post.authorId.valueOf() !== dto.userId) {
+                throw new Error(ErrorType.Unauthorized);
+            }
+
+            user.posts = user.posts.filter(id => id !== post.id.valueOf());
+
+            await this.postRepository.delete(post);
+            await this.userRepository.update(user);
+            await this.imageService.deleteImage(post.image);
         } 
         catch(error) {
             throw error;

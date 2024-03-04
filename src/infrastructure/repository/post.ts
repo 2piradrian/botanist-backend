@@ -34,4 +34,8 @@ export class PostRepository_I implements PostRepository {
         return this.dataSource.update(post);
     }
 
+    public delete(post: PostEntity): Promise<void> {
+        return this.dataSource.delete(post);
+    }
+
 }

@@ -10,4 +10,5 @@ export abstract class PostDataSource {
     public abstract create(dto: CreatePostDTO, user: UserEntity): Promise<PostEntity>;
     public abstract getByCategories(dto: GetByCategoriesDTO): Promise<PostEntity[]>;
     public abstract update(post: PostEntity): Promise<void>;
+    public abstract delete(post: PostEntity): Promise<void>;
 }

@@ -5,6 +5,7 @@ export * from './dto/auth/refresh-tokens'
 
 export * from './dto/post/create'
 export * from './dto/post/get-by-categories'
+export * from './dto/post/delete'
 
 export * from './dto/user/like-post'
 export * from './dto/user/follow-user'

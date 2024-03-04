@@ -1,7 +1,7 @@
 import { ErrorHandler } from './../../../domain/error/error-handler';
 import { Request, Response } from "express";
 import { PostService } from "./service";
-import { CreatePostDTO, GetByCategoriesDTO } from "../../../domain";
+import { CreatePostDTO, DeletePostDTO, GetByCategoriesDTO } from "../../../domain";
 
 export class PostController {
     constructor(
@@ -29,6 +29,18 @@ export class PostController {
 
         this.postService.getByCategories(dto!)
             .then((posts) => res.status(200).json(posts))
+            .catch(error => ErrorHandler.handle(error, res));
+    }
+
+    delete = (req: Request, res: Response) => {
+        const [error, dto] = DeletePostDTO.create({...req.query, userId: req.body.userId});
+
+        if (error) {
+            return res.status(400).json({ error });
+        }
+
+        this.postService.delete(dto!)
+            .then(() => res.status(200).json({}))
             .catch(error => ErrorHandler.handle(error, res));
     }
 }

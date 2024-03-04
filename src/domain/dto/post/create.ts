@@ -29,6 +29,10 @@ export class CreatePostDTO {
             if (typeof data[key] === 'string') {
                 data[key] = data[key].trim();
 
+                // Delete \n and \r from the final of the string
+                data[key] = data[key].replace(/^[\n\r]+|[\n\r]+$/g, '');
+
+
                 if (data[key].length === 0) {
                     return [ErrorType.InvalidFields];
                 }

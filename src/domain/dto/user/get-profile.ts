@@ -10,8 +10,6 @@ export class GetProfileDTO {
     public static create(data: {[key: string]: any}): [string?, GetProfileDTO?] {
         const { profile, userId, includePosts } = data;
 
-        console.log(data);
-
         if (!profile || !userId || includePosts === undefined) {
             return [ErrorType.MissingFields];
         }

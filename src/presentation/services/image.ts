@@ -1,6 +1,6 @@
 import fs from 'fs';
 import sharp from 'sharp';
-import { env } from '../../config';
+import { UnparseImage, env } from '../../config';
 
 export class ImageService {
     private readonly path: string;
@@ -13,7 +13,8 @@ export class ImageService {
     private async ensureDirectoryExists(directoryPath: string): Promise<void> {
         try {
             await fs.promises.access(directoryPath);
-        } catch (error: any) {
+        } 
+        catch (error: any) {
             if (error.code === 'ENOENT') {
                 await fs.promises.mkdir(directoryPath, { recursive: true });
             } else {
@@ -39,7 +40,20 @@ export class ImageService {
             await fs.promises.writeFile(filePath, compressedImageBuffer);
             
             return fileName;
-        } catch (error: any) {
+        } 
+        catch (error: any) {
+            throw error;
+        }
+    }
+
+    async deleteImage(imageName: string): Promise<void> {
+        try {
+            const unparsedImage = UnparseImage(imageName);
+            const filePath = `${this.path}${unparsedImage}`;
+
+            await fs.promises.unlink(filePath);
+        }
+        catch(error: any) {
             throw error;
         }
     }

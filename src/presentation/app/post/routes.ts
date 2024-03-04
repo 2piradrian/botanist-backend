@@ -19,6 +19,7 @@ export class PostRoutes {
 
         router.post('/create', [AuthValidator.checkToken], controller.create);
         router.get('/get-by-categories', [AuthValidator.checkToken], controller.getByCategories);
+        router.delete('/delete', [AuthValidator.checkToken], controller.delete);
 
         return router;
     }
