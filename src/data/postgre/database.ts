@@ -1,6 +1,5 @@
 import { Sequelize } from "sequelize";
 import { env } from "../../config";
-import { PostModel } from "./models/post";
 
 export class PostgreDatabase {
 
@@ -20,6 +19,8 @@ export class PostgreDatabase {
     public async connect() {
         try{
             await this.sequelize.authenticate();
+            await this.sequelize.sync();
+
             console.log("Connected to Postgre");
 
             return true;
