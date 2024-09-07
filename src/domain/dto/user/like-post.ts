@@ -1,4 +1,6 @@
 import { ErrorType } from "../../error/error-types";
+import { Checker } from "../../utils/checker";
+import { Sanitizer } from "../../utils/sanitizer";
 
 export class LikePostDTO {
     private constructor(
@@ -7,22 +9,12 @@ export class LikePostDTO {
     ){}
 
     public static create(data: {[key: string]: any}): [string?, LikePostDTO?] {
-        const { postId, userId } = data;
+        Sanitizer.trim(data);
 
-        if (!postId || !userId) {
+        if (!Checker.isString([data.postId, data.userId])) {
             return [ErrorType.MissingFields];
         }
 
-        for (const key in data) {
-            if (typeof data[key] !== 'string') {
-                return [ErrorType.InvalidFields];
-            }
-            data[key].trim();
-            if (data[key].length === 0) {
-                return [ErrorType.InvalidFields];
-            }
-        }
-
-        return [undefined, new LikePostDTO(postId, userId)];
+        return [undefined, new LikePostDTO(data.postId, data.userId)];
     }
 }

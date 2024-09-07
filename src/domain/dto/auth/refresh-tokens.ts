@@ -1,4 +1,6 @@
 import { ErrorType } from "../../error/error-types";
+import { Checker } from "../../utils/checker";
+import { Sanitizer } from "../../utils/sanitizer";
 
 export class RefreshTokenDTO {
     private constructor(
@@ -6,20 +8,24 @@ export class RefreshTokenDTO {
     ){}
 
     static create(data: {[key: string]: any}): [string?, RefreshTokenDTO?] {
-        const { refreshToken } = data;
+        Sanitizer.trim(data);
 
-        if (!refreshToken) {
+        if (!Checker.isString(data.refreshToken)) {
             return [ErrorType.MissingFields];
         }
 
-        if (typeof refreshToken !== 'string') {
+        if (!data.refreshToken) {
+            return [ErrorType.MissingFields];
+        }
+
+        if (typeof data.refreshToken !== 'string') {
             return [ErrorType.InvalidFields];
         }
 
-        if (refreshToken.length < 1 || refreshToken.length > 512) {
+        if (data.refreshToken.length < 1 || data.refreshToken.length > 512) {
             return [ErrorType.InvalidFields];
         }
 
-        return [null!, new RefreshTokenDTO(refreshToken)];
+        return [null!, new RefreshTokenDTO(data.refreshToken)];
     }
 }

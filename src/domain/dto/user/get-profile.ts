@@ -1,4 +1,6 @@
 import { ErrorType } from "../../error/error-types";
+import { Checker } from "../../utils/checker";
+import { Sanitizer } from "../../utils/sanitizer";
 
 export class GetProfileDTO {
     private constructor(
@@ -8,30 +10,17 @@ export class GetProfileDTO {
     ){}
 
     public static create(data: {[key: string]: any}): [string?, GetProfileDTO?] {
-        const { profile, userId, includePosts } = data;
+        Sanitizer.trim(data);
 
-        if (!profile || !userId || includePosts === undefined) {
-            return [ErrorType.MissingFields];
+        if (!Checker.isString([data.profile, data.userId])) {
+            return [ErrorType.InvalidFields];
         }
 
-        for (const key in data) {
-            if (typeof data[key] === 'string') {
-                data[key].trim();
-                if (data[key].length === 0) {
-                    return [ErrorType.InvalidFields];
-                }
-            }
-            else{
-                return [ErrorType.InvalidFields];
-            }
-        
-        }
-
-        const include = Boolean(includePosts) || false;
+        const include = Boolean(data.includePosts) || false;
         if (typeof include !== 'boolean') {
             return [ErrorType.InvalidFields];
         }
 
-        return [undefined, new GetProfileDTO(profile, userId, include)];
+        return [undefined, new GetProfileDTO(data.profile, data.userId, include)];
     }
 }

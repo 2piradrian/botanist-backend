@@ -1,5 +1,20 @@
 export class Validator {
 
+    static username(username: string) {
+        let isValid = true;
+    
+        if (typeof username !== "string") {
+            isValid = false;
+        }
+    
+        const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+        if (!usernameRegex.test(username)) {
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
     static email(email: string) {
         let isValid = true;
    

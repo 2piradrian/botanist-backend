@@ -1,5 +1,7 @@
 import { Categories } from "../../entity/category";
 import { ErrorType } from "../../error/error-types";
+import { Checker } from "../../utils/checker";
+import { Sanitizer } from "../../utils/sanitizer";
 
 export class CreatePostDTO {
     private constructor(
@@ -13,48 +15,28 @@ export class CreatePostDTO {
     ){}
 
     static create(data: {[key: string]: any}): [string?, CreatePostDTO?] {
-        const { userId, title, description, category, image, content } = data;
+        Sanitizer.trim(data);
 
-        if (!userId || !title || !description || !category || !image || !content) {
+        if (!Checker.isString([data.userId, data.title, data.description, data.category, data.image, data.content])) {
             return [ErrorType.MissingFields];
         }
 
-        for (const key in data) {
-            if (typeof data[key] !== 'string') {
-                return [ErrorType.InvalidFields];
-            }
-        }
-
-        for (const key in data) {
-            if (typeof data[key] === 'string') {
-                data[key] = data[key].trim();
-
-                // Delete \n and \r from the final of the string
-                data[key] = data[key].replace(/^[\n\r]+|[\n\r]+$/g, '');
-
-
-                if (data[key].length === 0) {
-                    return [ErrorType.InvalidFields];
-                }
-            }
-        }
-
-        if (title.length < 4) {
+        if (data.title.length < 4) {
             return [ErrorType.InvalidFields];
         }
 
-        if ( description.length < 15) {
+        if (data.description.length < 15) {
             return [ErrorType.InvalidFields];
         }
 
-        if ((Categories as any)[category] === undefined) {
+        if (data.content.length < 15) {
+            return [ErrorType.InvalidFields];
+        }
+        
+        if ((Categories as any)[data.category] === undefined) {
             return [ErrorType.InvalidFields];
         }
 
-        if (content.length < 15) {
-            return [ErrorType.InvalidFields];
-        }
-
-        return [undefined, new CreatePostDTO(userId, title, description, category, image, content)];
+        return [undefined, new CreatePostDTO(data.userId, data.title, data.description, data.category, data.image, data.content)];
     }
 }

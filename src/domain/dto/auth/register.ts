@@ -1,5 +1,7 @@
 import { ErrorType } from "../../error/error-types";
-import { Validator } from "../../validator/validator";
+import { Checker } from "../../utils/checker";
+import { Sanitizer } from "../../utils/sanitizer";
+import { Validator } from "../../utils/validator";
 
 
 export class RegisterUserDTO {
@@ -10,27 +12,25 @@ export class RegisterUserDTO {
     ){}
 
     static create(data: {[key: string]: any}): [string?, RegisterUserDTO?] {
-        const { email, password, username } = data;
+        Sanitizer.trim(data);
 
-        const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
-
-
-        if (!email || !password || !username) {
+        if (!Checker.isString([data.email, data.password, data.username])) {
             return [ErrorType.MissingFields];
         }
 
-        if (!usernameRegex.test(username)) {
+        if (!Validator.username(data.username)) {
             return [ErrorType.InvalidFields];
         }
 
-        if (!Validator.email(email)) {
+        if (!Validator.email(data.email)) {
             return [ErrorType.InvalidFields];
         }
 
-        if (!Validator.password(password)) {
+        if (!Validator.password(data.password)) {
             return [ErrorType.InvalidFields];
         }
 
-        return [undefined, new RegisterUserDTO(email, password, username)];
+
+        return [undefined, new RegisterUserDTO(data.email, data.password, data.username)];
     }
 }

@@ -1,5 +1,7 @@
 import { ErrorType } from "../../error/error-types";
-import { Validator } from "../../validator/validator";
+import { Checker } from "../../utils/checker";
+import { Sanitizer } from "../../utils/sanitizer";
+import { Validator } from "../../utils/validator";
 
 export class DeleteAccountDTO {
     private constructor(
@@ -8,20 +10,20 @@ export class DeleteAccountDTO {
     ){}
 
     static create(data: {[key: string]: any}): [string?, DeleteAccountDTO?] {
-        const { email, password } = data;
+        Sanitizer.trim(data);
 
-        if (!email || !password) {
+        if (!Checker.isString([data.email, data.password])) {
             return [ErrorType.MissingFields];
         }
 
-        if (!Validator.email(email)) {
+        if (!Validator.email(data.email)) {
             return [ErrorType.InvalidFields];
         }
 
-        if (!Validator.password(password)) {
+        if (!Validator.password(data.password)) {
             return [ErrorType.InvalidFields];
         }
 
-        return [undefined, new DeleteAccountDTO(email, password)];
+        return [undefined, new DeleteAccountDTO(data.email, data.password)];
     }
 }

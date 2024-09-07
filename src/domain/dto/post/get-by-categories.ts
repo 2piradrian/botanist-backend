@@ -1,5 +1,7 @@
 import { Categories } from "../../entity/category";
 import { ErrorType } from "../../error/error-types";
+import { Checker } from "../../utils/checker";
+import { Sanitizer } from "../../utils/sanitizer";
 
 export class GetByCategoriesDTO {
     private constructor(
@@ -9,34 +11,33 @@ export class GetByCategoriesDTO {
     ){}
 
     static create(data: {[key: string]: any}): [string?, GetByCategoriesDTO?] {
-        const { page, pageSize, categories } = data;
+        Sanitizer.trim(data);
 
-        if (page === undefined || pageSize === undefined || categories === undefined) {
+        if (data.categories === undefined) {
             return [ErrorType.MissingFields];
         }
 
-        let categoryList: string[] = categories.split(',');
-        if (categories.length === 0) {
+        let categoryList: string[] = data.categories.split(',');
+        if (data.categories.length === 0) { // Not categories filter applied
             categoryList = Object.keys(Categories);
         }
 
-        const pageInt = parseInt(page);
-        const pageSizeInt = parseInt(pageSize);
+        const pageInt = parseInt(data.page);
+        const pageSizeInt = parseInt(data.pageSize);
 
-        for (const category of categoryList) {
-            if (typeof category !== 'string') {
-                return [ErrorType.InvalidFields];
-            }
-            if ((Categories as any)[category] === undefined) {
-                return [ErrorType.InvalidFields];
-            }
+        if (!Checker.isNumber([pageInt, pageSizeInt])) {
+            return [ErrorType.InvalidFields];
+        }
+
+        if(!Checker.isString(categoryList)) {
+            return [ErrorType.InvalidFields];
         }
 
         if (pageInt <= 0 || pageSizeInt <= 0) {
             return [ErrorType.InvalidFields];
         }
 
-        return [undefined, new GetByCategoriesDTO(pageInt, pageSizeInt, categoryList)];
+        return [undefined, new GetByCategoriesDTO(data.pageInt, data.pageSizeInt, data.categoryList)];
     }
 
 }
