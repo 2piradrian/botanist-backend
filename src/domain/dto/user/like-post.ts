@@ -1,6 +1,5 @@
+import { Sanitizer, TypeChecker } from "../../../config";
 import { ErrorType } from "../../error/error-types";
-import { Checker } from "../../utils/checker";
-import { Sanitizer } from "../../utils/sanitizer";
 
 export class LikePostDTO {
     private constructor(
@@ -9,9 +8,9 @@ export class LikePostDTO {
     ){}
 
     public static create(data: {[key: string]: any}): [string?, LikePostDTO?] {
-        Sanitizer.trim(data);
+        Sanitizer.trimStrings(data);
 
-        if (!Checker.isString([data.postId, data.userId])) {
+        if (!TypeChecker.areStrings([data.postId, data.userId])) {
             return [ErrorType.MissingFields];
         }
 

@@ -1,6 +1,5 @@
+import { Sanitizer, TypeChecker } from "../../../config";
 import { ErrorType } from "../../error/error-types";
-import { Checker } from "../../utils/checker";
-import { Sanitizer } from "../../utils/sanitizer";
 
 export class FollowUserDTO {
     private constructor(
@@ -9,9 +8,9 @@ export class FollowUserDTO {
     ){}
 
     public static create(data: {[key: string]: any}): [string?, FollowUserDTO?] {
-        Sanitizer.trim(data);
+        Sanitizer.trimStrings(data);
 
-        if (!Checker.isString([data.followedId, data.userId])) {
+        if (!TypeChecker.areStrings([data.followedId, data.userId])) {
             return [ErrorType.MissingFields];
         }
 

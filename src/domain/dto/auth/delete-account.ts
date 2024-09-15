@@ -1,7 +1,5 @@
+import { Sanitizer, TypeChecker, Validator } from "../../../config";
 import { ErrorType } from "../../error/error-types";
-import { Checker } from "../../utils/checker";
-import { Sanitizer } from "../../utils/sanitizer";
-import { Validator } from "../../utils/validator";
 
 export class DeleteAccountDTO {
     private constructor(
@@ -10,9 +8,9 @@ export class DeleteAccountDTO {
     ){}
 
     static create(data: {[key: string]: any}): [string?, DeleteAccountDTO?] {
-        Sanitizer.trim(data);
+        Sanitizer.trimStrings(data);
 
-        if (!Checker.isString([data.email, data.password])) {
+        if (!TypeChecker.areStrings([data.email, data.password])) {
             return [ErrorType.MissingFields];
         }
 

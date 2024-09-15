@@ -1,8 +1,5 @@
+import { Sanitizer, TypeChecker, Validator } from "../../../config";
 import { ErrorType } from "../../error/error-types";
-import { Checker } from "../../utils/checker";
-import { Sanitizer } from "../../utils/sanitizer";
-import { Validator } from "../../utils/validator";
-
 
 export class RegisterUserDTO {
     private constructor(
@@ -12,9 +9,9 @@ export class RegisterUserDTO {
     ){}
 
     static create(data: {[key: string]: any}): [string?, RegisterUserDTO?] {
-        Sanitizer.trim(data);
+        Sanitizer.trimStrings(data);
 
-        if (!Checker.isString([data.email, data.password, data.username])) {
+        if (!TypeChecker.areStrings([data.email, data.password, data.username])) {
             return [ErrorType.MissingFields];
         }
 
@@ -29,7 +26,6 @@ export class RegisterUserDTO {
         if (!Validator.password(data.password)) {
             return [ErrorType.InvalidFields];
         }
-
 
         return [undefined, new RegisterUserDTO(data.email, data.password, data.username)];
     }

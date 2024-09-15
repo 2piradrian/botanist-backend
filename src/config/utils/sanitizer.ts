@@ -1,6 +1,6 @@
 export class Sanitizer {
 
-    static trim(data: {[key: string]: any}): void {
+    static trimStrings(data: {[key: string]: any}): void {
         for (const key in data) {
             if (typeof data[key] === 'string') {
                 data[key] = data[key].trim();

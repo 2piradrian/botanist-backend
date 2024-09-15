@@ -1,6 +1,5 @@
+import { Sanitizer, TypeChecker } from "../../../config";
 import { ErrorType } from "../../error/error-types";
-import { Checker } from "../../utils/checker";
-import { Sanitizer } from "../../utils/sanitizer";
 
 export class DeletePostDTO {
     private constructor(
@@ -9,9 +8,9 @@ export class DeletePostDTO {
     ){}
 
     static create(data: {[key: string]: any}): [string?, DeletePostDTO?] {
-        Sanitizer.trim(data);
+        Sanitizer.trimStrings(data);
 
-        if(!Checker.isString([data.userId, data.postId])) {
+        if(!TypeChecker.areStrings([data.userId, data.postId])) {
             return [ErrorType.MissingFields];
         }
 

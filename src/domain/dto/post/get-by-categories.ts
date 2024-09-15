@@ -1,7 +1,6 @@
+import { Sanitizer, TypeChecker } from "../../../config";
 import { Categories } from "../../entity/category";
 import { ErrorType } from "../../error/error-types";
-import { Checker } from "../../utils/checker";
-import { Sanitizer } from "../../utils/sanitizer";
 
 export class GetByCategoriesDTO {
     private constructor(
@@ -11,7 +10,7 @@ export class GetByCategoriesDTO {
     ){}
 
     static create(data: {[key: string]: any}): [string?, GetByCategoriesDTO?] {
-        Sanitizer.trim(data);
+        Sanitizer.trimStrings(data);
 
         if (data.categories === undefined) {
             return [ErrorType.MissingFields];
@@ -25,11 +24,11 @@ export class GetByCategoriesDTO {
         const pageInt = parseInt(data.page);
         const pageSizeInt = parseInt(data.pageSize);
 
-        if (!Checker.isNumber([pageInt, pageSizeInt])) {
+        if (!TypeChecker.areNumbers([pageInt, pageSizeInt])) {
             return [ErrorType.InvalidFields];
         }
 
-        if(!Checker.isString(categoryList)) {
+        if(!TypeChecker.areStrings(categoryList)) {
             return [ErrorType.InvalidFields];
         }
 

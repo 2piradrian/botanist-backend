@@ -1,7 +1,6 @@
+import { Sanitizer, TypeChecker } from "../../../config";
 import { Categories } from "../../entity/category";
 import { ErrorType } from "../../error/error-types";
-import { Checker } from "../../utils/checker";
-import { Sanitizer } from "../../utils/sanitizer";
 
 export class CreatePostDTO {
     private constructor(
@@ -15,9 +14,9 @@ export class CreatePostDTO {
     ){}
 
     static create(data: {[key: string]: any}): [string?, CreatePostDTO?] {
-        Sanitizer.trim(data);
+        Sanitizer.trimStrings(data);
 
-        if (!Checker.isString([data.userId, data.title, data.description, data.category, data.image, data.content])) {
+        if (!TypeChecker.areStrings([data.userId, data.title, data.description, data.category, data.image, data.content])) {
             return [ErrorType.MissingFields];
         }
 

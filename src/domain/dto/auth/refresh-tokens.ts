@@ -1,6 +1,5 @@
+import { Sanitizer, TypeChecker } from "../../../config";
 import { ErrorType } from "../../error/error-types";
-import { Checker } from "../../utils/checker";
-import { Sanitizer } from "../../utils/sanitizer";
 
 export class RefreshTokenDTO {
     private constructor(
@@ -8,9 +7,9 @@ export class RefreshTokenDTO {
     ){}
 
     static create(data: {[key: string]: any}): [string?, RefreshTokenDTO?] {
-        Sanitizer.trim(data);
+        Sanitizer.trimStrings(data);
 
-        if (!Checker.isString(data.refreshToken)) {
+        if (!TypeChecker.areStrings(data.refreshToken)) {
             return [ErrorType.MissingFields];
         }
 
